@@ -1,0 +1,40 @@
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.header {
+  background: linear-gradient(to right, #0062e6, #33aeff);
+  color: white;
+  padding: 100px 0;
+}
+
+.feature-card {
+  border: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+.howto-steps {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.howto-steps li {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+#monitoring-dashboard .card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#monitoring-dashboard .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+}
