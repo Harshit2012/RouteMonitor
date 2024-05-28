@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const fetchDataBtn = document.getElementById('fetchDataBtn');
     const apiUrlInput = document.getElementById('apiUrl');
-    const responseTimeLabel = document.getElementById('responseTimeLabel');
-    const errorRateLabel = document.getElementById('errorRateLabel');
+    const responseTimeText = document.getElementById('responseTimeText');
+    const responseText = document.getElementById('responseText');
+    const errorRateText = document.getElementById('errorRateText');
 
     fetchDataBtn.addEventListener('click', function() {
         const apiUrl = apiUrlInput.value;
         if (apiUrl) {
+            const startTime = performance.now();
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
@@ -15,10 +17,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     return response.json();
                 })
                 .then(data => {
+                    const endTime = performance.now();
+                    const duration = (endTime - startTime).toFixed(2);
+                    responseTimeText.textContent = `${duration} ms`;
+
                     if (!data || typeof data !== 'object') {
                         throw new Error('Invalid data format: data is not an object');
                     }
-                    updateLabels(data);
+
+                    displayData(data);
                 })
                 .catch(error => {
                     console.error('Error fetching or processing data:', error);
@@ -29,47 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function updateLabels(data) {
-        if (!data || data.length === 0) {
-            console.error('Invalid data format:', data);
-            alert('Failed to parse data from the API response. Please check the data format and try again.');
-            return;
+    function displayData(data) {
+        responseText.textContent = JSON.stringify(data, null, 2);
+
+        if (data.errorRate !== undefined) {
+            errorRateText.textContent = `${data.errorRate}%`;
+        } else {
+            errorRateText.textContent = 'No error rate data available';
         }
-    
-        responseTimeLabel.textContent = 'Response Time:';
-        errorRateLabel.textContent = 'Error Rate:';
-    
-        data.forEach((item, index) => {
-            const responseTimeItem = document.createElement('div');
-            responseTimeItem.textContent = `#${index + 1}: ${JSON.stringify(item)}`;
-            responseTimeLabel.appendChild(responseTimeItem);
-    
-            const responseCopyButton = createCopyButton(responseTimeItem.textContent);
-            responseTimeItem.appendChild(responseCopyButton);
-        });
-    
-        const errorRateItem = document.createElement('div');
-        errorRateItem.textContent = JSON.stringify(data.errorRate);
-        errorRateLabel.appendChild(errorRateItem);
-    
-        const errorRateCopyButton = createCopyButton(errorRateItem.textContent);
-        errorRateItem.appendChild(errorRateCopyButton);
     }
-    
-    function createCopyButton(text) {
-        const button = document.createElement('button');
-        button.textContent = 'Copy';
-        button.classList.add('btn', 'btn-primary', 'btn-sm', 'ms-2');
-        button.addEventListener('click', function() {
-            navigator.clipboard.writeText(text)
-                .then(() => {
-                    alert('Copied to clipboard');
-                })
-                .catch(error => {
-                    console.error('Error copying text to clipboard:', error);
-                    alert('Failed to copy text to clipboard');
-                });
-        });
-        return button;
-    }                
 });
