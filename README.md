@@ -13,7 +13,7 @@ Monitor your API performance
 ## Features
 - **Real time monitoring**:- Get real-time insights into your API performance and usage
 - **Simple to use**:- Using this website is simple
-- **Get json**:- Get the the json of the api of both response time and error rate
+- **Get the time, response and error rate**:- You can get the time it taken to get the response and the error rate in percentage
 
 ## Technologies Used
 - HTML
