@@ -1,11 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const fetchDataBtn = document.getElementById('fetchDataBtn');
     const apiUrlInput = document.getElementById('apiUrl');
     const responseTimeText = document.getElementById('responseTimeText');
     const responseText = document.getElementById('responseText');
     const errorRateText = document.getElementById('errorRateText');
+    const downloadJsonBtn = document.getElementById('downloadJsonBtn');
 
-    fetchDataBtn.addEventListener('click', function() {
+    let jsonData = null;
+
+    fetchDataBtn.addEventListener('click', function () {
         const apiUrl = apiUrlInput.value;
         if (apiUrl) {
             const startTime = performance.now();
@@ -25,7 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         throw new Error('Invalid data format: data is not an object');
                     }
 
-                    displayData(data);
+                    jsonData = data;
+                    responseText.textContent = JSON.stringify(data, null, 2);
+
+                    if (data.errorRate !== undefined) {
+                        errorRateText.textContent = `${data.errorRate}%`;
+                    } else {
+                        errorRateText.textContent = 'No error rate data available';
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching or processing data:', error);
@@ -36,13 +46,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function displayData(data) {
-        responseText.textContent = JSON.stringify(data, null, 2);
-
-        if (data.errorRate !== undefined) {
-            errorRateText.textContent = `${data.errorRate}%`;
+    downloadJsonBtn.addEventListener('click', function () {
+        if (jsonData) {
+            downloadJsonAsFile(jsonData);
         } else {
-            errorRateText.textContent = 'No error rate data available';
+            alert('No data available to download');
         }
+    });
+
+    function downloadJsonAsFile(data) {
+        const dataStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'response_data.json';
+        link.click();
+        URL.revokeObjectURL(url);
     }
 });
