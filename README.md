@@ -14,6 +14,7 @@ Monitor your API performance
 - **Real time monitoring**:- Get real-time insights into your API performance and usage
 - **Simple to use**:- Using this website is simple
 - **Get the time, response and error rate**:- You can get the time it taken to get the response and the error rate in percentage
+- **Download the response**:- Click on download button to download the response
 
 ## Technologies Used
 - HTML
