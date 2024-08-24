@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const responseText = document.getElementById('responseText');
     const errorRateText = document.getElementById('errorRateText');
     const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+    const confirmDownloadBtn = document.getElementById('confirmDownloadBtn');
+    const downloadModal = new bootstrap.Modal(document.getElementById('downloadModal'));
 
     let jsonData = null;
 
@@ -48,10 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     downloadJsonBtn.addEventListener('click', function () {
         if (jsonData) {
-            downloadJsonAsFile(jsonData);
+            downloadModal.show();
         } else {
             alert('No data available to download');
         }
+    });
+
+    confirmDownloadBtn.addEventListener('click', function () {
+        downloadJsonAsFile(jsonData);
+        downloadModal.hide();
     });
 
     function downloadJsonAsFile(data) {
