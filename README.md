@@ -24,6 +24,7 @@ Monitor your API performance
 
 ## Code structure
 - index.html
+- monitor.html
 - style.css
 - main.js
 
